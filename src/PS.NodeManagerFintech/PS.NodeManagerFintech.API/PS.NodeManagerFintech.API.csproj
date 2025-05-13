@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -12,6 +12,11 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PS.NodeManagerFintech.Application\PS.NodeManagerFintech.Application.csproj" />
+    <ProjectReference Include="..\PS.NodeManagerFintech.Infrastructure\PS.NodeManagerFintech.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

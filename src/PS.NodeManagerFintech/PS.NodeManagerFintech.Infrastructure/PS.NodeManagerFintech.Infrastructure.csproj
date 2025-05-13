@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PS.NodeManagerFintech.Application\PS.NodeManagerFintech.Application.csproj" />
+  </ItemGroup>
+
 </Project>
