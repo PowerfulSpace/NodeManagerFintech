@@ -19,24 +19,25 @@ namespace PS.NodeManagerFintech.API.Middleware
 
         public async Task InvokeAsync(HttpContext context, IExceptionLogger exceptionLogger)
         {
+            var cancellationToken = context.RequestAborted;
             try
             {
                 await _next(context);
             }
             catch (SecureException ex)
             {
-                await HandleSecureExceptionAsync(context, ex, exceptionLogger);
+                await HandleSecureExceptionAsync(context, ex, exceptionLogger, cancellationToken);
             }
             catch (Exception ex)
             {
-                await HandleGenericExceptionAsync(context, ex, exceptionLogger);
+                await HandleGenericExceptionAsync(context, ex, exceptionLogger, cancellationToken);
             }
         }
 
-        private async Task HandleSecureExceptionAsync(HttpContext context, SecureException ex, IExceptionLogger exceptionLogger)
+        private async Task HandleSecureExceptionAsync(HttpContext context, SecureException ex, IExceptionLogger exceptionLogger, CancellationToken cancellationToken)
         {
             _logger.LogWarning(ex, "Secure exception occurred");
-            var logId = await exceptionLogger.LogAsync(context, ex);
+            var logId = await exceptionLogger.LogAsync(context, ex, cancellationToken);
 
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.ContentType = "application/json";
@@ -45,14 +46,15 @@ namespace PS.NodeManagerFintech.API.Middleware
             {
                 type = "Secure",
                 id = logId,
-                data = new { message = ex.Message }
+                data = new { message = ex.Message },
+                cancellationToken
             });
         }
 
-        private async Task HandleGenericExceptionAsync(HttpContext context, Exception ex, IExceptionLogger exceptionLogger)
+        private async Task HandleGenericExceptionAsync(HttpContext context, Exception ex, IExceptionLogger exceptionLogger, CancellationToken cancellationToken)
         {
             _logger.LogError(ex, "Unhandled exception occurred");
-            var logId = await exceptionLogger.LogAsync(context, ex);
+            var logId = await exceptionLogger.LogAsync(context, ex, cancellationToken);
 
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.ContentType = "application/json";
@@ -61,7 +63,8 @@ namespace PS.NodeManagerFintech.API.Middleware
             {
                 type = "Exception",
                 id = logId,
-                data = new { message = $"Internal server error ID = {logId}" }
+                data = new { message = $"Internal server error ID = {logId}" },
+                cancellationToken
             });
         }
     }

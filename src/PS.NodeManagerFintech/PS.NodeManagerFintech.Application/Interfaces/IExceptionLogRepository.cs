@@ -4,6 +4,6 @@ namespace PS.NodeManagerFintech.Application.Interfaces
 {
     public interface IExceptionLogRepository
     {
-        Task AddAsync(ExceptionLog log);
+        Task AddAsync(ExceptionLog log, CancellationToken cancellationToken);
     }
 }

@@ -16,24 +16,24 @@ namespace PS.NodeManagerFintech.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TreeDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<TreeDto>>> GetAll(CancellationToken cancellationToken)
         {
-            var trees = await _treeService.GetAllTreesAsync();
+            var trees = await _treeService.GetAllTreesAsync(cancellationToken);
             return Ok(trees);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TreeDto>> GetById(Guid id)
+        public async Task<ActionResult<TreeDto>> GetById(Guid id, CancellationToken cancellationToken)
         {
-            var tree = await _treeService.GetTreeByIdAsync(id);
+            var tree = await _treeService.GetTreeByIdAsync(id, cancellationToken);
             if (tree is null) return NotFound();
             return Ok(tree);
         }
 
         [HttpPost]
-        public async Task<ActionResult<TreeDto>> Create([FromBody] CreateTreeRequest request)
+        public async Task<ActionResult<TreeDto>> Create([FromBody] CreateTreeRequest request, CancellationToken cancellationToken)
         {
-            var createdTree = await _treeService.CreateTreeAsync(request);
+            var createdTree = await _treeService.CreateTreeAsync(request, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { id = createdTree.Id }, createdTree);
         }
     }

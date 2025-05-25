@@ -4,9 +4,9 @@ namespace PS.NodeManagerFintech.Application.Interfaces
 {
     public interface ITreeRepository
     {
-        Task<Tree?> GetByIdAsync(Guid id, bool asNoTracking = false);
-        Task<IEnumerable<Tree>> GetAllAsync();
-        Task AddAsync(Tree tree);
-        Task RemoveAsync(Tree tree);
+        Task<Tree?> GetByIdAsync(Guid id, CancellationToken cancellationToken, bool asNoTracking = false);
+        Task<IEnumerable<Tree>> GetAllAsync(CancellationToken cancellationToken);
+        Task AddAsync(Tree tree, CancellationToken cancellationToken);
+        Task RemoveAsync(Tree tree, CancellationToken cancellationToken);
     }
 }

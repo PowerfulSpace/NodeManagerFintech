@@ -16,16 +16,16 @@ namespace PS.NodeManagerFintech.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TreeNodeDto>> Create([FromBody] CreateTreeNodeRequest request)
+        public async Task<ActionResult<TreeNodeDto>> Create([FromBody] CreateTreeNodeRequest request, CancellationToken cancellationToken)
         {
-            var node = await _nodeService.CreateNodeAsync(request);
+            var node = await _nodeService.CreateNodeAsync(request, cancellationToken);
             return Ok(node);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            await _nodeService.DeleteNodeAsync(id);
+            await _nodeService.DeleteNodeAsync(id, cancellationToken);
             return NoContent();
         }
     }

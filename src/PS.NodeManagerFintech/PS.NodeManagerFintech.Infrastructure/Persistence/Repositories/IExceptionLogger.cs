@@ -12,10 +12,10 @@ namespace PS.NodeManagerFintech.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(ExceptionLog log)
+        public async Task AddAsync(ExceptionLog log, CancellationToken cancellationToken)
         {
-            await _context.ExceptionLogs.AddAsync(log);
-            await _context.SaveChangesAsync();
+            await _context.ExceptionLogs.AddAsync(log, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

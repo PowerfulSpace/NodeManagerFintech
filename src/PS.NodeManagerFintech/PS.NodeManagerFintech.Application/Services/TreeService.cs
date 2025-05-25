@@ -15,31 +15,31 @@ namespace PS.NodeManagerFintech.Application.Services
             _treeRepository = treeRepository;
         }
 
-        public async Task<TreeDto> CreateTreeAsync(CreateTreeRequest request)
+        public async Task<TreeDto> CreateTreeAsync(CreateTreeRequest request, CancellationToken cancellationToken)
         {
             var tree = new Tree(request.Name);
-            await _treeRepository.AddAsync(tree);
+            await _treeRepository.AddAsync(tree, cancellationToken);
             return tree.Adapt<TreeDto>();
         }
 
-        public async Task<IEnumerable<TreeDto>> GetAllTreesAsync()
+        public async Task<IEnumerable<TreeDto>> GetAllTreesAsync(CancellationToken cancellationToken)
         {
-            var trees = await _treeRepository.GetAllAsync();
+            var trees = await _treeRepository.GetAllAsync(cancellationToken);
             return trees.Adapt<IEnumerable<TreeDto>>();
         }
 
-        public async Task<TreeDto?> GetTreeByIdAsync(Guid id)
+        public async Task<TreeDto?> GetTreeByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var tree = await _treeRepository.GetByIdAsync(id, true);
+            var tree = await _treeRepository.GetByIdAsync(id, cancellationToken, true);
             return tree?.Adapt<TreeDto>();
         }
 
-        public async Task<bool> DeleteTreeAsync(Guid id)
+        public async Task<bool> DeleteTreeAsync(Guid id, CancellationToken cancellationToken)
         {
-            var tree = await _treeRepository.GetByIdAsync(id);
+            var tree = await _treeRepository.GetByIdAsync(id, cancellationToken);
             if (tree is null) return false;
 
-            await _treeRepository.RemoveAsync(tree);
+            await _treeRepository.RemoveAsync(tree, cancellationToken);
             return true;
         }
     }

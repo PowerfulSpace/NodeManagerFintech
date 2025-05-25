@@ -13,7 +13,7 @@ namespace PS.NodeManagerFintech.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<Tree?> GetByIdAsync(Guid id, bool asNoTracking = false)
+        public async Task<Tree?> GetByIdAsync(Guid id, CancellationToken cancellationToken, bool asNoTracking = false)
         {
             IQueryable<Tree> tree = _context.Trees.Include(t => t.Nodes);
 
@@ -22,24 +22,24 @@ namespace PS.NodeManagerFintech.Infrastructure.Persistence.Repositories
                 tree = tree.AsNoTracking();
             }
 
-            return await tree.FirstOrDefaultAsync(t => t.Id == id);
+            return await tree.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
         }
 
-        public async Task<IEnumerable<Tree>> GetAllAsync()
+        public async Task<IEnumerable<Tree>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await _context.Trees
                 .AsNoTracking()
                 .Include(t => t.Nodes)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
-        public async Task AddAsync(Tree tree)
+        public async Task AddAsync(Tree tree, CancellationToken cancellationToken)
         {
-            await _context.Trees.AddAsync(tree);
-            await _context.SaveChangesAsync();
+            await _context.Trees.AddAsync(tree, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task RemoveAsync(Tree tree)
+        public async Task RemoveAsync(Tree tree, CancellationToken cancellationToken)
         {
             _context.Trees.Remove(tree);
             await _context.SaveChangesAsync();

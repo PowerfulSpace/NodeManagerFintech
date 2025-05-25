@@ -15,7 +15,7 @@ namespace PS.NodeManagerFintech.Application.Services
             _repository = repository;
         }
 
-        public async Task<Guid> LogAsync(HttpContext context, Exception exception)
+        public async Task<Guid> LogAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
         {
             context.Request.EnableBuffering();
 
@@ -30,7 +30,7 @@ namespace PS.NodeManagerFintech.Application.Services
                 stackTrace: exception.ToString()
             );
 
-            await _repository.AddAsync(log);
+            await _repository.AddAsync(log, cancellationToken);
             return log.Id;
         }
 

@@ -18,20 +18,20 @@ namespace PS.NodeManagerFintech.Application.Services
             _treeRepository = treeRepository;
         }
 
-        public async Task<TreeNodeDto> CreateNodeAsync(CreateTreeNodeRequest request)
+        public async Task<TreeNodeDto> CreateNodeAsync(CreateTreeNodeRequest request, CancellationToken cancellationToken)
         {
-            var tree = await _treeRepository.GetByIdAsync(request.TreeId, true);
+            var tree = await _treeRepository.GetByIdAsync(request.TreeId, cancellationToken, true);
             if (tree is null) throw new SecureException("Tree not found");
 
             var node = new TreeNode(request.Name, request.TreeId, request.ParentId);
-            await _nodeRepository.AddAsync(node);
+            await _nodeRepository.AddAsync(node, cancellationToken);
 
             return node.Adapt<TreeNodeDto>();
         }
 
-        public async Task<bool> DeleteNodeAsync(Guid nodeId)
+        public async Task<bool> DeleteNodeAsync(Guid nodeId, CancellationToken cancellationToken)
         {
-            var node = await _nodeRepository.GetByIdAsync(nodeId);
+            var node = await _nodeRepository.GetByIdAsync(nodeId, cancellationToken);
             if (node is null) return false;
 
             if (node.Children.Any())
