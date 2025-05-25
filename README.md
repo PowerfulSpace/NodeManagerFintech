@@ -49,6 +49,7 @@ Node Manager Fintech — это API-приложение для управлен
 - ASP.NET Core 6
 - Entity Framework Core 6
 - Npgsql.EntityFrameworkCore.PostgreSQL
+- Microsoft.EntityFrameworkCore
 - Microsoft.EntityFrameworkCore.Tools
 - Microsoft.EntityFrameworkCore.Design
 - Microsoft.EntityFrameworkCore.Relational
