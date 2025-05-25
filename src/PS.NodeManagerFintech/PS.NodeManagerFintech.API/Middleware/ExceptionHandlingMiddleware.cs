@@ -46,7 +46,7 @@ namespace PS.NodeManagerFintech.API.Middleware
             {
                 type = "Secure",
                 id = logId,
-                data = new { message = ex.Message },
+                data = new { message = ex.Message }
             }, cancellationToken);
         }
 
