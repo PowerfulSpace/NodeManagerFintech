@@ -47,8 +47,7 @@ namespace PS.NodeManagerFintech.API.Middleware
                 type = "Secure",
                 id = logId,
                 data = new { message = ex.Message },
-                cancellationToken
-            });
+            }, cancellationToken);
         }
 
         private async Task HandleGenericExceptionAsync(HttpContext context, Exception ex, IExceptionLogger exceptionLogger, CancellationToken cancellationToken)
@@ -63,9 +62,8 @@ namespace PS.NodeManagerFintech.API.Middleware
             {
                 type = "Exception",
                 id = logId,
-                data = new { message = $"Internal server error ID = {logId}" },
-                cancellationToken
-            });
+                data = new { message = $"Internal server error ID = {logId}" }
+            }, cancellationToken);
         }
     }
 }
